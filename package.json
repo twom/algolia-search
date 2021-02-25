@@ -1,5 +1,5 @@
 {
-  "name": "parsley_react",
+  "name": "locai_search",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -42,6 +42,7 @@
     "jest-resolve": "26.6.0",
     "jest-watch-typeahead": "0.6.1",
     "mini-css-extract-plugin": "0.11.3",
+    "nock": "^13.0.8",
     "optimize-css-assets-webpack-plugin": "5.0.4",
     "pnp-webpack-plugin": "1.6.4",
     "postcss-flexbugs-fixes": "4.2.1",
@@ -150,11 +151,6 @@
       "jest-watch-typeahead/testname"
     ],
     "resetMocks": true
-  },
-  "babel": {
-    "presets": [
-      "react-app"
-    ]
   },
   "eslintConfig": {
     "extends": "react-app"

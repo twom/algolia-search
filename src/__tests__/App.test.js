@@ -1,17 +1,30 @@
+import React from 'react';
 import { render, fireEvent, waitFor } from '@testing-library/react';
 import App from '../App';
+
+// Using nock to mock http requests that come from third-party library
+const nock = require('nock');
 const searchFixture = require('./searchFixture.json');
+
+// Disable outside http connections, only use mocks
+nock.disableNetConnect();
+
+const url = 'https://i1cqoys68c-dsn.algolia.net/';
+const path = '/1/indexes/stg_choicemarket_products/query';
 
 let data;
 beforeEach(() => {
-  fetch.resetMocks();
-  data = searchFixture.data;
+  data = searchFixture.hits;
 });
 
-test('Can search and display articles', async () => {
+afterEach(() => {
+  nock.cleanAll();
+});
+
+test('Can search and display items', async () => {
+  const scope = nock(url).post(path).query(true).reply(200, searchFixture);
+
   const { getByText, getByLabelText } = render(<App />);
-  // Mock a response from parsley's search
-  fetch.mockResponseOnce(JSON.stringify(searchFixture));
 
   // Find search bar
   const inputElement = getByLabelText(/search bar/i);
@@ -20,20 +33,19 @@ test('Can search and display articles', async () => {
   await waitFor(() => {
     // Start searching
     fireEvent.change(inputElement, { target: { value: 'a' } });
-
-    // check API was called
-    expect(fetch.mock.calls.length).toEqual(1);
-    // Check every title is now showing
-    data.forEach(({ title }) => {
-      expect(getByText(title)).toBeInTheDocument();
-    });
+    // Check first name is now showing
+    const name = data[0]['Name'];
+    expect(getByText(name)).toBeInTheDocument();
   });
+
+  // API call was made
+  scope.isDone();
 });
 
 test('Can handle empty response', async () => {
-  const { getByText, getByLabelText } = render(<App />);
-  fetch.mockResponseOnce(JSON.stringify({ data: [] }));
+  const scope = nock(url).post(path).query(true).reply(200, { hits: [] });
 
+  const { getByText, getByLabelText } = render(<App />);
   const inputElement = getByLabelText(/search bar/i);
   expect(inputElement).toBeInTheDocument();
 
@@ -41,13 +53,14 @@ test('Can handle empty response', async () => {
     fireEvent.change(inputElement, { target: { value: 'a' } });
     expect(getByText(/No results found/)).toBeInTheDocument();
   });
+
+  scope.isDone();
 });
 
 test('Can handle errored API call', async () => {
-  const { getByText, getByLabelText } = render(<App />);
+  const scope = nock(url).post(path).query(true).replyWithError('error!');
 
-  const error = 'fake error';
-  fetch.mockReject(new Error(error));
+  const { getByText, getByLabelText } = render(<App />);
   const inputElement = getByLabelText(/search bar/i);
   expect(inputElement).toBeInTheDocument();
 
@@ -55,4 +68,6 @@ test('Can handle errored API call', async () => {
     fireEvent.change(inputElement, { target: { value: 'a' } });
     expect(getByText(/something went wrong/i)).toBeInTheDocument();
   });
+
+  scope.isDone();
 });

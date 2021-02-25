@@ -2,23 +2,22 @@ import RoundedLabels from './RoundedLabels';
 import './ResultCard.css';
 
 const ResultCard = ({ result }) => {
-  const { 
+  const {
     Name: name,
     Description: description,
     Categories: categories,
-    Tags: tags,
   } = result;
-  const allCategories = categories.map(({ Name: name }) => name)
+  const allCategories = categories.map(({ Name: name }) => name);
 
   return (
     <div className="card">
-     <div className={'title'}>{name}</div>
+      <div className={'title'}>{name}</div>
       <div className={'card-body'}>
         <div className="information-row">
           <i>{description}</i>
         </div>
         <div className="information-row">
-          {<RoundedLabels info={allCategories} background={"#FED766"} />}
+          {<RoundedLabels info={allCategories} background={'#FED766'} />}
         </div>
       </div>
     </div>

@@ -1,6 +1,8 @@
 # Example search with Algolia
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app). No additional production dependencies were added
+A search app powererd by Algolia search.
+
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app) and has been ejected.
 
 ## Available Scripts
 
@@ -17,4 +19,11 @@ You will also see any lint errors in the console.
 ### `npm test`
 
 Runs the testing suite written with react-testing-library
+
+## Further tasks and considerations
+- Adding more information to the card
+- Utilize hitsPerPage param with dropdown
+- File structure
+- Split production and dev dependencies
+- Add prop types
 

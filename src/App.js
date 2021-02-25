@@ -14,15 +14,13 @@ function App() {
       setError(null); // reset error state before sending new query
       search(query, setResults, (e) => setError(e));
     }
+    return () => setQuery('');
   }, [query]);
 
   return (
     <div className="App">
       <h1>Algolia Search</h1>
-      <SearchBar
-        query={query}
-        setQuery={setQuery}
-      />
+      <SearchBar query={query} setQuery={setQuery} />
       <div className={'results-container'}>
         <SearchResultsDisplay results={results} query={query} error={error} />
       </div>
