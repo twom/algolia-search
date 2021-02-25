@@ -1,6 +1,6 @@
 import './SearchBar.css';
 
-const SearchBar = ({ query, setQuery, days, setDays }) => {
+const SearchBar = ({ query, setQuery }) => {
   return (
     <div className="search-container">
       <div className="query-container">

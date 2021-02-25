@@ -20,7 +20,6 @@ function App() {
     <div className="App">
       <h1>Algolia Search</h1>
       <SearchBar
-        setDays={setDays}
         query={query}
         setQuery={setQuery}
       />

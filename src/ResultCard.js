@@ -1,32 +1,27 @@
+import RoundedLabels from './RoundedLabels';
 import './ResultCard.css';
 
 const ResultCard = ({ result }) => {
-  const {
-    title,
-    author,
-    url,
-    thumb_url_medium: thumbnail,
-    pub_date: pubDate,
+  const { 
+    Name: name,
+    Description: description,
+    Categories: categories,
+    Tags: tags,
   } = result;
-
-  const formattedDate = pubDate ? new Date(pubDate).toLocaleDateString() : '';
+  const allCategories = categories.map(({ Name: name }) => name)
 
   return (
-    <a href={url} target="_blank" rel="noreferrer noopener">
-      <div className="card">
-        <div className="image-box">
-          <img alt="" src={thumbnail} />
+    <div className="card">
+     <div className={'title'}>{name}</div>
+      <div className={'card-body'}>
+        <div className="information-row">
+          <i>{description}</i>
         </div>
-        <div className={'title'}>{title}</div>
-        <footer>
-          <div className="information-row left">{author}</div>
-          <div className="information-row right">
-            <i>{formattedDate}</i>
-          </div>
-        </footer>
-        <p></p>
+        <div className="information-row">
+          {<RoundedLabels info={allCategories} background={"#FED766"} />}
+        </div>
       </div>
-    </a>
+    </div>
   );
 };
 
